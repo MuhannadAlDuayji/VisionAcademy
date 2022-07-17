@@ -1,4 +1,4 @@
-package online.visionacademy.dao.student;
+package online.visionacademy.dao.oracledao.student;
 
 import online.visionacademy.datasource.ConnectionFactory;
 import online.visionacademy.datasource.DataSourceType;
@@ -19,57 +19,14 @@ public class OracleStudentDAO extends StudentDAO{
 
     private static final String [] COLUMNS = new String[] {"ID","FIRST_NAME","LAST_NAME","DOB","NATIONAL_ID"};
 
-
     @Override
-    protected ConnectionFactory getConnectionFactory() {
-        return ConnectionFactory.getConnectionFactory(DataSourceType.ORACLE);
+    public String getTableName() {
+        return TABLE_NAME;
     }
 
     @Override
-    protected String getInsertQuery() {
-        return QueryBuilder.insert(TABLE_NAME,COLUMNS);
-    }
-
-    @Override
-    protected String getSelectByIdQuery() {
-        return QueryBuilder.selectById(TABLE_NAME,COLUMNS);
-    }
-
-    @Override
-    protected String getSelectAllQuery() {
-        return QueryBuilder.selectAll(TABLE_NAME,COLUMNS);
-    }
-
-    @Override
-    protected String getSelectAllByIdQuery(List<Long> ids) {
-        return QueryBuilder.selectAllById(TABLE_NAME,COLUMNS,ids);
-    }
-
-    @Override
-    protected String getUpdateQuery() {
-        return QueryBuilder.update(TABLE_NAME,COLUMNS);
-    }
-
-    @Override
-    protected String getDeleteQuery() {
-        return QueryBuilder.delete(TABLE_NAME,COLUMNS[0]);
-    }
-
-    @Override
-    protected String getCountQuery() {
-        return QueryBuilder.count(TABLE_NAME);
-    }
-
-
-    @Override
-    protected void setStatementWhereId(PreparedStatement ps, Long id) throws DAOException {
-
-        try {
-            ps.setLong(1,id);
-        } catch (SQLException e) {
-            throw new DAOException(e.getMessage(),e);
-        }
-
+    public String[] getColumns() {
+        return COLUMNS;
     }
 
     @Override
@@ -94,23 +51,6 @@ public class OracleStudentDAO extends StudentDAO{
     }
 
     @Override
-    protected void setStatementParas(PreparedStatement ps, List<Long> ids) throws DAOException {
-
-        int index = 1;
-
-        try {
-
-            for (Long id:ids) {
-                ps.setLong(index++,id);
-            }
-
-        }catch (SQLException e){
-            throw new DAOException(e.getMessage(),e);
-        }
-
-    }
-
-    @Override
     protected Student mapObject(ResultSet rs) throws DAOException {
 
         Student student = new Student();
@@ -124,7 +64,6 @@ public class OracleStudentDAO extends StudentDAO{
         } catch (SQLException e) {
             throw new DAOException(e.getMessage(),e);
         }
-
 
         return student;
     }
@@ -156,4 +95,6 @@ public class OracleStudentDAO extends StudentDAO{
     public Student getStudentWithHighestGPA() {
         return null;
     }
+
+
 }

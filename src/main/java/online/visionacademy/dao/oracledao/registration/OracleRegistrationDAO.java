@@ -1,7 +1,5 @@
-package online.visionacademy.dao.registration;
+package online.visionacademy.dao.oracledao.registration;
 
-import online.visionacademy.datasource.ConnectionFactory;
-import online.visionacademy.datasource.DataSourceType;
 import online.visionacademy.model.Registration;
 import online.visionacademy.exceptions.DAOException;
 import online.visionacademy.support.QueryBuilder;
@@ -20,8 +18,13 @@ public class OracleRegistrationDAO extends RegistrationDAO{
     private static final String [] COLUMNS = new String[]{"ID","STUDENT_ID","COURSE_ID"};
 
     @Override
-    protected ConnectionFactory getConnectionFactory() {
-        return ConnectionFactory.getConnectionFactory(DataSourceType.ORACLE);
+    public String getTableName() {
+        return TABLE_NAME;
+    }
+
+    @Override
+    public String[] getColumns() {
+        return COLUMNS;
     }
 
     @Override
@@ -59,15 +62,7 @@ public class OracleRegistrationDAO extends RegistrationDAO{
         return QueryBuilder.count(TABLE_NAME);
     }
 
-    @Override
-    protected void setStatementWhereId(PreparedStatement ps, Long id) throws DAOException {
 
-        try {
-            ps.setLong(1,id);
-        } catch (SQLException e) {
-            throw new DAOException(e.getMessage(),e);
-        }
-    }
 
     @Override
     protected void setStatementParas(PreparedStatement ps, Registration entity) throws DAOException {

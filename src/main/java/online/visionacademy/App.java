@@ -1,16 +1,12 @@
 package online.visionacademy;
 
-import online.visionacademy.dao.course.CourseDAO;
-import online.visionacademy.dao.course.OracleCourseDAO;
-import online.visionacademy.dao.registration.OracleRegistrationDAO;
-import online.visionacademy.dao.registration.RegistrationDAO;
-import online.visionacademy.dao.student.OracleStudentDAO;
-import online.visionacademy.dao.student.StudentDAO;
+import online.visionacademy.dao.oracledao.course.CourseDAO;
+import online.visionacademy.dao.oracledao.course.OracleCourseDAO;
+import online.visionacademy.dao.oracledao.registration.OracleRegistrationDAO;
+import online.visionacademy.dao.oracledao.registration.RegistrationDAO;
+import online.visionacademy.dao.oracledao.student.OracleStudentDAO;
+import online.visionacademy.dao.oracledao.student.StudentDAO;
 import online.visionacademy.exceptions.DAOException;
-import online.visionacademy.model.Course;
-import online.visionacademy.model.Registration;
-
-import java.util.List;
 
 
 public class App {

@@ -39,7 +39,7 @@ public abstract class AbstractDAO<T,ID> implements GenericDAO<T,ID> {
 
         try(Connection connection = getConnectionFactory().createConnection();
             PreparedStatement ps = connection.prepareStatement(insertQuery)) {
-
+            System.out.println(insertQuery);
             setStatementParas(ps,entity);
 
             if(ps.executeUpdate() < UPDATE_EXECUTED_SUCCESSFULLY){
@@ -91,7 +91,7 @@ public abstract class AbstractDAO<T,ID> implements GenericDAO<T,ID> {
         PreparedStatement ps = connection.prepareStatement(selectAllQuery)) {
 
             ResultSet rs = ps.executeQuery();
-            if(rs.getRow() != 0)
+            if(rs !=  null)
                 list = mapAllObjects(rs);
 
         }
@@ -130,6 +130,7 @@ public abstract class AbstractDAO<T,ID> implements GenericDAO<T,ID> {
     public T update(T entity) throws DAOException {
 
         String updateQuery = getUpdateQuery();
+        System.out.println(updateQuery);
 
         try(Connection connection = getConnectionFactory().createConnection();
             PreparedStatement ps = connection.prepareStatement(updateQuery)) {

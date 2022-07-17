@@ -4,6 +4,7 @@ import online.visionacademy.datasource.ConnectionFactory;
 import online.visionacademy.datasource.DataSourceType;
 import online.visionacademy.model.Registration;
 import online.visionacademy.exceptions.DAOException;
+import online.visionacademy.support.QueryBuilder;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -14,10 +15,9 @@ import java.util.List;
 
 public class OracleRegistrationDAO extends RegistrationDAO{
 
-    private static final String TABLE = "Registration";
-    private static final String ID = "ID";
-    private static final String STUDENT_ID = "STUDENT_ID";
-    private static final String COURSE_ID = "COURSE_ID";
+    private static final String TABLE_NAME = "Registration";
+
+    private static final String [] COLUMNS = new String[]{"ID","STUDENT_ID","COURSE_ID"};
 
     @Override
     protected ConnectionFactory getConnectionFactory() {
@@ -26,59 +26,37 @@ public class OracleRegistrationDAO extends RegistrationDAO{
 
     @Override
     protected String getInsertQuery() {
-        return "INSERT INTO "+TABLE
-                +" ("+STUDENT_ID+","+COURSE_ID+") VALUES (?,?)";
+        return QueryBuilder.insert(TABLE_NAME,COLUMNS);
     }
 
     @Override
     protected String getSelectByIdQuery() {
-        return "SELECT "+ID+", "+STUDENT_ID+", "+COURSE_ID
-                +" FROM "+TABLE
-                +" WHERE "+ID+" = ? ";
+        return QueryBuilder.selectById(TABLE_NAME,COLUMNS);
     }
 
     @Override
     protected String getSelectAllQuery() {
-        return "SELECT "+ID+", "+STUDENT_ID+", "+COURSE_ID
-                +" FROM "+TABLE;
+        return QueryBuilder.selectAll(TABLE_NAME,COLUMNS);
     }
 
     @Override
     protected String getSelectAllByIdQuery(List<Long> ids) {
-
-        StringBuilder stringBuilder = new StringBuilder();
-
-        for (Long id:ids)
-            stringBuilder.append("?,");
-
-        stringBuilder.deleteCharAt(stringBuilder.length()-1);
-
-        return "SELECT "+ID+", "+STUDENT_ID+", "+COURSE_ID
-                +" FROM "+TABLE
-                +" WHERE ID IN ("+stringBuilder+")";
+        return QueryBuilder.selectAllById(TABLE_NAME,COLUMNS,ids);
     }
 
     @Override
     protected String getUpdateQuery() {
-        return "UPDATE "+TABLE
-                +" SET "
-                +" "+STUDENT_ID+" = ?, "
-                +" "+COURSE_ID+" = ? "
-                +" WHERE "
-                +" "+ID+" = ? ";
+        return QueryBuilder.update(TABLE_NAME,COLUMNS);
     }
 
     @Override
     protected String getDeleteQuery() {
-        return "DELETE FROM "+TABLE
-                +" WHERE "
-                +" "+ID+" = ? ";
+        return QueryBuilder.delete(TABLE_NAME,COLUMNS[0]);
     }
 
     @Override
     protected String getCountQuery() {
-        return "SELECT COUNT(*) FROM "
-                +" "+TABLE;
+        return QueryBuilder.count(TABLE_NAME);
     }
 
     @Override
@@ -132,9 +110,9 @@ public class OracleRegistrationDAO extends RegistrationDAO{
 
         try {
 
-            registration.setId(rs.getLong(ID));
-            registration.setStudentId((rs.getLong(STUDENT_ID)));
-            registration.setCourseId(rs.getLong(COURSE_ID));
+            registration.setId(rs.getLong(COLUMNS[0]));
+            registration.setStudentId((rs.getLong(COLUMNS[1])));
+            registration.setCourseId(rs.getLong(COLUMNS[2]));
 
         }catch (SQLException e){
             throw new DAOException(e.getMessage(),e);
@@ -154,9 +132,9 @@ public class OracleRegistrationDAO extends RegistrationDAO{
             while (rs.next()){
                 Registration registration = new Registration();
 
-                registration.setId(rs.getLong(ID));
-                registration.setStudentId(rs.getLong(STUDENT_ID));
-                registration.setCourseId(rs.getLong(COURSE_ID));
+                registration.setId(rs.getLong(COLUMNS[0]));
+                registration.setStudentId(rs.getLong(COLUMNS[1]));
+                registration.setCourseId(rs.getLong(COLUMNS[2]));
                 registrationList.add(registration);
 
             }
@@ -171,15 +149,13 @@ public class OracleRegistrationDAO extends RegistrationDAO{
     @Override
     public List<Registration> findStudentById(Long id) throws DAOException {
 
-        final String query = "SELECT "+ID+", "+STUDENT_ID+", "
-                +COURSE_ID+" FROM "+TABLE+" WHERE "+STUDENT_ID+" = ? ";
+        final String query = QueryBuilder.selectAll(TABLE_NAME,COLUMNS)+" WHERE "+COLUMNS[1]+" = ? ";
         return findBy(id,query);
     }
 
     @Override
     public List<Registration> findCourseById(Long id) throws DAOException {
-        final String query = "SELECT "+ID+", "+STUDENT_ID+", "
-                +COURSE_ID+" FROM "+TABLE+" WHERE "+COURSE_ID+" = ? ";
+        final String query = QueryBuilder.selectAll(TABLE_NAME,COLUMNS)+" WHERE "+COLUMNS[2]+" = ? ";
 
         return findBy(id,query);
     }

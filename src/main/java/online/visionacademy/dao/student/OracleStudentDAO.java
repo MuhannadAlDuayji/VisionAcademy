@@ -4,6 +4,7 @@ import online.visionacademy.datasource.ConnectionFactory;
 import online.visionacademy.datasource.DataSourceType;
 import online.visionacademy.exceptions.DAOException;
 import online.visionacademy.model.Student;
+import online.visionacademy.support.QueryBuilder;
 
 import java.sql.Date;
 import java.sql.PreparedStatement;
@@ -16,11 +17,8 @@ public class OracleStudentDAO extends StudentDAO{
 
     private static final String TABLE_NAME = "STUDENT";
 
-    private static final String id ="ID";
-    private static final String firstName = "FIRST_NAME";
-    private static final String lastName = "LAST_NAME";
-    private static final String dob = "DOB";
-    private static final String nationalId = "NATIONAL_ID";
+    private static final String [] COLUMNS = new String[] {"ID","FIRST_NAME","LAST_NAME","DOB","NATIONAL_ID"};
+
 
     @Override
     protected ConnectionFactory getConnectionFactory() {
@@ -29,60 +27,39 @@ public class OracleStudentDAO extends StudentDAO{
 
     @Override
     protected String getInsertQuery() {
-        return "INSERT INTO "+TABLE_NAME+" "
-                +" ( "+nationalId+","
-                +" "+firstName+","
-                +" "+lastName+","
-                +" "+dob+")"
-                +" VALUES (?,?,?,?)";
+        return QueryBuilder.insert(TABLE_NAME,COLUMNS);
     }
 
     @Override
     protected String getSelectByIdQuery() {
-        return "SELECT "+id+","+firstName+","+lastName+","+dob+","+nationalId+" FROM "
-                +TABLE_NAME+" WHERE "+ id +" = ?";
+        return QueryBuilder.selectById(TABLE_NAME,COLUMNS);
     }
 
     @Override
     protected String getSelectAllQuery() {
-        return "SELECT "+id+","+firstName+","+lastName+","+dob+","+nationalId+" FROM "
-                +TABLE_NAME;
+        return QueryBuilder.selectAll(TABLE_NAME,COLUMNS);
     }
 
     @Override
     protected String getSelectAllByIdQuery(List<Long> ids) {
-        StringBuilder st = new StringBuilder();
-
-        for(Long id :ids)
-            st.append("?,");
-
-        st.deleteCharAt(st.length()-1);
-
-        return "SELECT "+id+","+firstName+","+lastName+","+dob+","+nationalId+" FROM "
-                +TABLE_NAME+" WHERE ID IN ("+st.toString()+")";
+        return QueryBuilder.selectAllById(TABLE_NAME,COLUMNS,ids);
     }
 
     @Override
     protected String getUpdateQuery() {
-        return "UPDATE "+TABLE_NAME
-                +" SET"
-                +" "+nationalId+" = ?,"
-                +" "+firstName+" = ?,"
-                +" "+lastName+" = ?,"
-                +" "+dob+" = ?"
-                +" WHERE "+id+" = ?";
+        return QueryBuilder.update(TABLE_NAME,COLUMNS);
     }
 
     @Override
     protected String getDeleteQuery() {
-        return "DELETE FROM "+TABLE_NAME
-                +" WHERE "+id+" = ? ";
+        return QueryBuilder.delete(TABLE_NAME,COLUMNS[0]);
     }
 
     @Override
     protected String getCountQuery() {
-        return "SELECT COUNT(*) FROM "+TABLE_NAME;
+        return QueryBuilder.count(TABLE_NAME);
     }
+
 
     @Override
     protected void setStatementWhereId(PreparedStatement ps, Long id) throws DAOException {
@@ -101,10 +78,11 @@ public class OracleStudentDAO extends StudentDAO{
         boolean isUpdate = entity.getId() != null;
 
         try {
-            ps.setLong(1, entity.getNationalId());
-            ps.setString(2, entity.getFirstName());
-            ps.setString(3, entity.getLastName());
-            ps.setDate(4, new Date(entity.getDob().toEpochDay()));
+            ps.setString(1, entity.getFirstName());
+            ps.setString(2, entity.getLastName());
+            ps.setDate(3, new Date(entity.getDob().toEpochDay()));
+            ps.setLong(4, entity.getNationalId());
+
 
             if (isUpdate)
                 ps.setLong(5, entity.getId());
@@ -138,11 +116,11 @@ public class OracleStudentDAO extends StudentDAO{
         Student student = new Student();
 
         try {
-            student.setId(rs.getLong(id));
-            student.setFirstName(rs.getString(firstName));
-            student.setLastName(rs.getString(lastName));
-            student.setDob(rs.getDate(dob).toLocalDate());
-            student.setNationalId(rs.getLong(nationalId));
+            student.setId(rs.getLong(COLUMNS[0]));
+            student.setFirstName(rs.getString(COLUMNS[1]));
+            student.setLastName(rs.getString(COLUMNS[2]));
+            student.setDob(rs.getDate(COLUMNS[3]).toLocalDate());
+            student.setNationalId(rs.getLong(COLUMNS[4]));
         } catch (SQLException e) {
             throw new DAOException(e.getMessage(),e);
         }
@@ -160,11 +138,11 @@ public class OracleStudentDAO extends StudentDAO{
             while (rs.next()){
 
                 Student student = new Student();
-                student.setId(rs.getLong(id));
-                student.setFirstName(rs.getString(firstName));
-                student.setLastName(rs.getString(lastName));
-                student.setDob(rs.getDate(dob).toLocalDate());
-                student.setNationalId(rs.getLong(nationalId));
+                student.setId(rs.getLong(COLUMNS[0]));
+                student.setFirstName(rs.getString(COLUMNS[1]));
+                student.setLastName(rs.getString(COLUMNS[2]));
+                student.setDob(rs.getDate(COLUMNS[3]).toLocalDate());
+                student.setNationalId(rs.getLong(COLUMNS[4]));
 
                 studentList.add(student);
             }

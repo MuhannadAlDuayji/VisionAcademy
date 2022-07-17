@@ -1,8 +1,13 @@
 package online.visionacademy;
 
+import online.visionacademy.dao.course.CourseDAO;
+import online.visionacademy.dao.course.OracleCourseDAO;
 import online.visionacademy.dao.registration.OracleRegistrationDAO;
 import online.visionacademy.dao.registration.RegistrationDAO;
+import online.visionacademy.dao.student.OracleStudentDAO;
+import online.visionacademy.dao.student.StudentDAO;
 import online.visionacademy.exceptions.DAOException;
+import online.visionacademy.model.Course;
 import online.visionacademy.model.Registration;
 
 import java.util.List;
@@ -12,17 +17,23 @@ public class App {
 
     public static void main(String[] args)  {
 
-      RegistrationDAO registrationDAO = new OracleRegistrationDAO();
+        StudentDAO studentDAO =new OracleStudentDAO();
+        RegistrationDAO registrationDAO = new OracleRegistrationDAO();
+        CourseDAO courseDAO = new OracleCourseDAO();
 
-      try {
+        try {
+
+            System.out.println("=========Student=============");
+            studentDAO.readAll().forEach(System.out::println);
+            System.out.println("=========Course======");
+            courseDAO.readAll().forEach(System.out::println);
+            System.out.println("=========Registration=============");
+            registrationDAO.readAll().forEach(System.out::println);
 
 
-        List<Registration> rs = registrationDAO.findStudentById(1L);
-        for(Registration r:rs)
-            System.out.println(r);
-      } catch (DAOException e) {
-        System.out.println(e);
-      }
+        } catch (DAOException e) {
+            System.out.println(e);
+        }
 
 
     }

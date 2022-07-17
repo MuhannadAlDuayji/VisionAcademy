@@ -4,6 +4,7 @@ import online.visionacademy.datasource.DataSourceType;
 import online.visionacademy.datasource.ConnectionFactory;
 import online.visionacademy.exceptions.DAOException;
 import online.visionacademy.model.Course;
+import online.visionacademy.support.QueryBuilder;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -14,10 +15,8 @@ import java.util.List;
 public class OracleCourseDAO extends CourseDAO{
 
     private static final String TABLE_NAME = "COURSE";
-    private static final String ID = "ID";
-    private static final String CODE = "code";
-    private static final String NAME = "name";
-    private static final String DESCRIPTION = "description";
+
+    private static final String [] COLUMNS = new String[]{"ID","CODE","NAME","DESCRIPTION"};
     @Override
     protected ConnectionFactory getConnectionFactory() {
         return ConnectionFactory.getConnectionFactory(DataSourceType.ORACLE);
@@ -25,60 +24,37 @@ public class OracleCourseDAO extends CourseDAO{
 
     @Override
     protected String getInsertQuery() {
-        return "INSERT INTO "+TABLE_NAME+" ("+CODE+","+NAME+","+DESCRIPTION+") " +
-                " VALUES (?,?,?) ";
+        return QueryBuilder.insert(TABLE_NAME,COLUMNS);
     }
 
     @Override
     protected String getSelectByIdQuery() {
-        return "SELECT "+ID+", "+CODE+", "+NAME+", "+DESCRIPTION+" "
-                +" FROM "
-                +" "+TABLE_NAME
-                +" WHERE "+ID+" = ? ";
+        return QueryBuilder.selectById(TABLE_NAME,COLUMNS);
     }
 
     @Override
     protected String getSelectAllQuery() {
-        return "SELECT "+ID+", "+CODE+", "+NAME+", "+DESCRIPTION+" "
-                +" FROM "
-                +" "+TABLE_NAME;
+        return QueryBuilder.selectAll(TABLE_NAME,COLUMNS);
     }
 
     @Override
-    protected String getSelectAllByIdQuery(List<Long> longs) {
-
-        StringBuilder st = new StringBuilder();
-
-        for(Long id:longs)
-            st.append("?,");
-        st.deleteCharAt(st.length()-1);
-
-
-        return "SELECT "+ID+", "+CODE+", "+NAME+", "+DESCRIPTION+" "
-                +" FROM "
-                +" "+TABLE_NAME
-                +" WHERE ID IN ("+st.toString()+")";
+    protected String getSelectAllByIdQuery(List<Long> ids) {
+        return QueryBuilder.selectAllById(TABLE_NAME,COLUMNS,ids);
     }
 
     @Override
     protected String getUpdateQuery() {
-        return "UPDATE "+TABLE_NAME
-                +" SET "
-                +" "+CODE+" = ?, "
-                +" "+NAME+" = ?, "
-                +" "+DESCRIPTION+" = ? "
-                +" WHERE "+ID+" = ? ";
+        return QueryBuilder.update(TABLE_NAME,COLUMNS);
     }
 
     @Override
     protected String getDeleteQuery() {
-        return "DELETE FROM "+TABLE_NAME
-                +" WHERE "+ID+" = ? ";
+        return QueryBuilder.delete(TABLE_NAME,COLUMNS[0]);
     }
 
     @Override
     protected String getCountQuery() {
-        return "SELECT COUNT(*) FROM "+TABLE_NAME;
+        return QueryBuilder.count(TABLE_NAME);
     }
 
     @Override
@@ -128,10 +104,10 @@ public class OracleCourseDAO extends CourseDAO{
         Course course = new Course();
         try {
 
-            course.setId(rs.getLong(ID));
-            course.setCode(rs.getString(CODE));
-            course.setName(rs.getString(NAME));
-            course.setDescription(rs.getString(DESCRIPTION));
+            course.setId(rs.getLong(COLUMNS[0]));
+            course.setCode(rs.getString(COLUMNS[1]));
+            course.setName(rs.getString(COLUMNS[2]));
+            course.setDescription(rs.getString(COLUMNS[3]));
 
         }catch (SQLException e){
             throw new DAOException(e.getMessage(),e);
@@ -149,10 +125,10 @@ public class OracleCourseDAO extends CourseDAO{
             while (rs.next()){
                 Course course = new Course();
 
-                course.setId(rs.getLong(ID));
-                course.setCode(rs.getString(CODE));
-                course.setName(rs.getString(NAME));
-                course.setDescription(rs.getString(DESCRIPTION));
+                course.setId(rs.getLong(COLUMNS[0]));
+                course.setCode(rs.getString(COLUMNS[1]));
+                course.setName(rs.getString(COLUMNS[2]));
+                course.setDescription(rs.getString(COLUMNS[3]));
 
                 courseList.add(course);
             }

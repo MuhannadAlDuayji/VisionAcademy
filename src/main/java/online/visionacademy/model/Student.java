@@ -1,4 +1,4 @@
-package org.example.model;
+package online.visionacademy.model;
 
 import java.time.LocalDate;
 

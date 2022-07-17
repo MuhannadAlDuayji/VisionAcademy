@@ -1,7 +1,7 @@
-package org.example.datasource;
+package online.visionacademy.datasource;
 
-import org.example.exceptions.DataSourceException;
-import org.example.common.PropertiesReader;
+import online.visionacademy.exceptions.DataSourceException;
+import online.visionacademy.common.PropertiesReader;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

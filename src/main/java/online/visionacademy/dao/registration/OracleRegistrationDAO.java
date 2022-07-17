@@ -1,10 +1,9 @@
-package org.example.dao.registration;
+package online.visionacademy.dao.registration;
 
-import org.example.datasource.ConnectionFactory;
-import org.example.datasource.DataSourceType;
-import org.example.exceptions.DAOException;
-import org.example.exceptions.DataSourceException;
-import org.example.model.Registration;
+import online.visionacademy.datasource.ConnectionFactory;
+import online.visionacademy.datasource.DataSourceType;
+import online.visionacademy.model.Registration;
+import online.visionacademy.exceptions.DAOException;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

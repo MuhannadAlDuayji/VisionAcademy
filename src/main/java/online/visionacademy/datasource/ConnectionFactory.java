@@ -1,6 +1,6 @@
-package org.example.datasource;
+package online.visionacademy.datasource;
 
-import org.example.exceptions.DataSourceException;
+import online.visionacademy.exceptions.DataSourceException;
 
 import java.sql.Connection;
 

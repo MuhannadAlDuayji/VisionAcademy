@@ -1,4 +1,4 @@
-package org.example.exceptions;
+package online.visionacademy.exceptions;
 
 public class DataSourceException  extends Exception{
 

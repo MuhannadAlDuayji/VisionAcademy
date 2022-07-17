@@ -1,4 +1,4 @@
-package org.example.support;
+package online.visionacademy.support;
 
 public class QueryBuilder {
 

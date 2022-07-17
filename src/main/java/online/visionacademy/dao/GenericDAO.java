@@ -1,7 +1,7 @@
-package org.example.dao;
+package online.visionacademy.dao;
 
-import org.example.exceptions.DAOException;
-import org.example.exceptions.DataSourceException;
+import online.visionacademy.exceptions.DataSourceException;
+import online.visionacademy.exceptions.DAOException;
 
 import java.sql.SQLException;
 import java.util.List;

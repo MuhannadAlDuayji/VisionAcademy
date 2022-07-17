@@ -1,7 +1,7 @@
-package org.example.dao;
+package online.visionacademy.dao;
 
-import org.example.datasource.ConnectionFactory;
-import org.example.exceptions.DAOException;
+import online.visionacademy.datasource.ConnectionFactory;
+import online.visionacademy.exceptions.DAOException;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

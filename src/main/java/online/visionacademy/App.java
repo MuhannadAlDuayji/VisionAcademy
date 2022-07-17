@@ -1,16 +1,10 @@
-package org.example;
+package online.visionacademy;
 
-import org.example.dao.course.CourseDAO;
-import org.example.dao.course.OracleCourseDAO;
-import org.example.dao.registration.OracleRegistrationDAO;
-import org.example.dao.registration.RegistrationDAO;
-import org.example.dao.student.OracleStudentDAO;
-import org.example.dao.student.StudentDAO;
-import org.example.exceptions.DAOException;
-import org.example.exceptions.DataSourceException;
-import org.example.model.Registration;
+import online.visionacademy.dao.registration.OracleRegistrationDAO;
+import online.visionacademy.dao.registration.RegistrationDAO;
+import online.visionacademy.exceptions.DAOException;
+import online.visionacademy.model.Registration;
 
-import java.util.Arrays;
 import java.util.List;
 
 

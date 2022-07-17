@@ -1,7 +1,7 @@
-package org.example.dao.student;
+package online.visionacademy.dao.student;
 
-import org.example.dao.AbstractDAO;
-import org.example.model.Student;
+import online.visionacademy.dao.AbstractDAO;
+import online.visionacademy.model.Student;
 
 public abstract class StudentDAO extends AbstractDAO<Student,Long> {
 

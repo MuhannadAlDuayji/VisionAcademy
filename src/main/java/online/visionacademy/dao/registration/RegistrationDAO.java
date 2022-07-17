@@ -1,8 +1,8 @@
-package org.example.dao.registration;
+package online.visionacademy.dao.registration;
 
-import org.example.dao.AbstractDAO;
-import org.example.exceptions.DAOException;
-import org.example.model.Registration;
+import online.visionacademy.model.Registration;
+import online.visionacademy.dao.AbstractDAO;
+import online.visionacademy.exceptions.DAOException;
 
 import java.util.List;
 

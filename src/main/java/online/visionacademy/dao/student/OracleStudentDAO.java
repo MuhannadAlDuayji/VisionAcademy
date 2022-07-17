@@ -1,9 +1,9 @@
-package org.example.dao.student;
+package online.visionacademy.dao.student;
 
-import org.example.datasource.ConnectionFactory;
-import org.example.datasource.DataSourceType;
-import org.example.exceptions.DAOException;
-import org.example.model.Student;
+import online.visionacademy.datasource.ConnectionFactory;
+import online.visionacademy.datasource.DataSourceType;
+import online.visionacademy.exceptions.DAOException;
+import online.visionacademy.model.Student;
 
 import java.sql.Date;
 import java.sql.PreparedStatement;

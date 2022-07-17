@@ -1,4 +1,4 @@
-package org.example.common;
+package online.visionacademy.common;
 
 import java.io.FileInputStream;
 import java.io.IOException;

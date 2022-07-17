@@ -1,4 +1,4 @@
-package org.example.datasource;
+package online.visionacademy.datasource;
 
 public enum DataSourceType {
     MYSQL,

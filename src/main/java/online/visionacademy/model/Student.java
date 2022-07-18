@@ -1,8 +1,10 @@
 package online.visionacademy.model;
 
+import online.visionacademy.dao.Identifiable;
+
 import java.time.LocalDate;
 
-public class Student {
+public class Student implements Identifiable {
 
     private Long id;
     private Long nationalId;
@@ -14,6 +16,10 @@ public class Student {
 
     }
 
+
+    public Student(Long id){
+        this.id = id;
+    }
     public Student(Long id, Long nationalId, String firstName, String lastName, LocalDate dob) {
         this.id = id;
         this.nationalId = nationalId;

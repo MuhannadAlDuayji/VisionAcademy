@@ -1,11 +1,20 @@
 package online.visionacademy.model;
 
-public class Course {
+import online.visionacademy.dao.Identifiable;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
+public class Course implements Identifiable {
 
     private Long id;
     private String code;
     private String name;
     private String description;
+
+
+    private List<StudentRef> studentRefList = new ArrayList<>();
 
     public Course(){
     }
@@ -61,5 +70,19 @@ public class Course {
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 '}';
+    }
+
+    public void addStudent(Student student){
+        this.studentRefList.add(new StudentRef(student.getId()));
+    }
+    public void setStudentIds(List<Long> ids) {
+        for (Long studentId:ids) {
+            this.studentRefList.add(new StudentRef(studentId));
+        }
+    }
+    public List<Long> getStudentIds(){
+        return studentRefList.stream()
+                .map(StudentRef::getStudentId)
+                .collect(Collectors.toList());
     }
 }

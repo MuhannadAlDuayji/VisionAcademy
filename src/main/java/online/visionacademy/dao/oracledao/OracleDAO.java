@@ -1,16 +1,19 @@
 package online.visionacademy.dao.oracledao;
 
 import online.visionacademy.dao.AbstractDAO;
+import online.visionacademy.dao.Identifiable;
 import online.visionacademy.datasource.ConnectionFactory;
 import online.visionacademy.datasource.DataSourceType;
 import online.visionacademy.exceptions.DAOException;
 import online.visionacademy.support.QueryBuilder;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
-public abstract class OracleDAO<T,ID> extends AbstractDAO<T,ID> {
+public abstract class OracleDAO<T extends Identifiable,ID> extends AbstractDAO<T,ID> {
 
     public abstract String getTableName();
     public abstract String [] getColumns();
@@ -84,5 +87,38 @@ public abstract class OracleDAO<T,ID> extends AbstractDAO<T,ID> {
     }
 
 
+    @Override
+    public T insert(T entity) throws DAOException {
+        String insertQuery = getInsertQuery();
 
+        try(Connection connection = getConnectionFactory().createConnection();
+            //, new String[] {"transporter_id"}
+            PreparedStatement ps = connection.prepareStatement(insertQuery, new String[]{"ID"})) {
+            setStatementParas(ps,entity);
+
+            System.out.println(getConnectionFactory().getDriverName());
+
+            if(ps.executeUpdate() < 1){
+                throw new DAOException("Could not save the object.");
+            }
+            System.out.println("Here");
+            setGeneratedKey(ps.getGeneratedKeys(), entity);
+        }
+        catch (Exception e){
+            throw new DAOException(e.getMessage(),e);
+        }
+        return entity;
+    }
+
+    @Override
+    protected void setGeneratedKey(ResultSet rs, T entity) throws DAOException {
+        try {
+            if(rs != null && rs.next()){
+                Long id = rs.getLong(1);
+                entity.setId(id);
+            }
+        }catch (SQLException e){
+            throw new DAOException(e.getMessage(),e);
+        }
+    }
 }

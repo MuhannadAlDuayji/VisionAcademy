@@ -46,7 +46,12 @@
           <scope>compile</scope>
       </dependency>
 
-      <!-- https://mvnrepository.com/artifact/com.oracle.database.jdbc/ojdbc8 -->
+    <!-- https://mvnrepository.com/artifact/net.datafaker/datafaker -->
+      <dependency>
+        <groupId>net.datafaker</groupId>
+        <artifactId>datafaker</artifactId>
+        <version>1.4.0</version>
+      </dependency>
 
 
 

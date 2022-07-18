@@ -1,11 +1,17 @@
 package online.visionacademy.model;
 
-public class Registration  {
+import online.visionacademy.dao.Identifiable;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
+public class Registration implements Identifiable {
 
     private Long id;
     private Long studentId;
     private Long courseId;
 
+    private List<StudentRef> studentRefList;
 
     public Registration(Long id, Long studentId, Long courseId) {
         this.id = id;
@@ -42,6 +48,7 @@ public class Registration  {
     public void setCourseId(Long courseId) {
         this.courseId = courseId;
     }
+
 
     @Override
     public String toString() {

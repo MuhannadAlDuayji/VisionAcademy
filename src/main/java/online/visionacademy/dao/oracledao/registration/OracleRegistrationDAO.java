@@ -167,7 +167,6 @@ public class OracleRegistrationDAO extends RegistrationDAO{
 
             if(rs != null){
                 registrationList = mapAllObjects(rs);
-                System.out.println("row : "+rs.getRow());
             }
 
 

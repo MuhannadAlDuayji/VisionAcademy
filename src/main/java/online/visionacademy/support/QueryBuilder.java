@@ -23,6 +23,7 @@ public class QueryBuilder {
         StringBuilder sql = new StringBuilder();
         sql.append("SELECT ");
         sql.append(columnsAndColon(columns));
+        sql.append(" FROM ");
         sql.append(TABLE_NAME);
         sql.append(" WHERE ");
         sql.append(columns[0]);
@@ -36,8 +37,12 @@ public class QueryBuilder {
         StringBuilder sql = new StringBuilder();
 
         sql.append(selectAll(TABLE_NAME,columns));
+        sql.append(" WHERE ");
+        sql.append(columns[0]);
+        sql.append(" IN ");
+        sql.append(" ( ");
         sql.append(questionMarkAndColon(ids));
-
+        sql.append(" ) ");
         return sql.toString();
     }
 

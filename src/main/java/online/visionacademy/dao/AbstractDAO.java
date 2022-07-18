@@ -6,6 +6,7 @@ import online.visionacademy.exceptions.DAOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -21,6 +22,8 @@ public abstract class AbstractDAO<T,ID> implements GenericDAO<T,ID> {
     protected abstract String getUpdateQuery();
     protected abstract String getDeleteQuery();
     protected abstract String getCountQuery();
+
+    protected abstract void setGeneratedKey(ResultSet rs, T entity) throws DAOException;
 
     // set the id for the where clause in preparedStatement
     protected abstract void setStatementWhereId(PreparedStatement ps, ID id) throws DAOException;
@@ -38,14 +41,16 @@ public abstract class AbstractDAO<T,ID> implements GenericDAO<T,ID> {
         String insertQuery = getInsertQuery();
 
         try(Connection connection = getConnectionFactory().createConnection();
-            PreparedStatement ps = connection.prepareStatement(insertQuery)) {
-            System.out.println(insertQuery);
+            //, new String[] {"transporter_id"}
+            PreparedStatement ps = connection.prepareStatement(insertQuery, PreparedStatement.RETURN_GENERATED_KEYS)) {
             setStatementParas(ps,entity);
+
 
             if(ps.executeUpdate() < UPDATE_EXECUTED_SUCCESSFULLY){
                 throw new DAOException("Could not save the object.");
             }
-
+            System.out.println("Here");
+            setGeneratedKey(ps.getGeneratedKeys(), entity);
         }
         catch (Exception e){
             throw new DAOException(e.getMessage(),e);
@@ -156,7 +161,7 @@ public abstract class AbstractDAO<T,ID> implements GenericDAO<T,ID> {
             setStatementWhereId(ps,id);
 
             if(ps.executeUpdate() < UPDATE_EXECUTED_SUCCESSFULLY)
-                throw new DAOException("Could not update the entity.");
+                throw new DAOException("Could not delete the entity.");
         }
         catch (Exception e){
             throw new DAOException(e.getMessage(),e);

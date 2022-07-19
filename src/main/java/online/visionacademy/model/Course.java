@@ -30,6 +30,8 @@ public class Course implements Identifiable {
         this(null,code,name,description);
     }
 
+
+
     public Long getId() {
         return id;
     }
@@ -69,6 +71,7 @@ public class Course implements Identifiable {
                 ", code='" + code + '\'' +
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
+                ", studentRefList=" + studentRefList +
                 '}';
     }
 

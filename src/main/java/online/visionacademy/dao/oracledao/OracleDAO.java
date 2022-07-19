@@ -96,12 +96,9 @@ public abstract class OracleDAO<T extends Identifiable,ID> extends AbstractDAO<T
             PreparedStatement ps = connection.prepareStatement(insertQuery, new String[]{"ID"})) {
             setStatementParas(ps,entity);
 
-            System.out.println(getConnectionFactory().getDriverName());
-
             if(ps.executeUpdate() < 1){
                 throw new DAOException("Could not save the object.");
             }
-            System.out.println("Here");
             setGeneratedKey(ps.getGeneratedKeys(), entity);
         }
         catch (Exception e){

@@ -157,7 +157,6 @@ public abstract class AbstractDAO<T,ID> implements GenericDAO<T,ID> {
 
         try(Connection connection = getConnectionFactory().createConnection();
             PreparedStatement ps = connection.prepareStatement(deleteQuery)) {
-
             setStatementWhereId(ps,id);
 
             if(ps.executeUpdate() < UPDATE_EXECUTED_SUCCESSFULLY)

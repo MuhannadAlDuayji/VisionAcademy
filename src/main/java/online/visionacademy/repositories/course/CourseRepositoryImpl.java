@@ -128,14 +128,42 @@ public class CourseRepositoryImpl extends CourseRepository{
     }
 
     @Override
+    public List<Course> findAll() throws PersistentException {
+
+        List<Course> courses = super.findAll();
+        for (Course course: courses) {
+            try {
+                getStudentIdsForCourse(course);
+            } catch (DAOException e) {
+                throw new PersistentException(e.getMessage(),e);
+            }
+        }
+
+        return courses;
+    }
+
+    @Override
+    public List<Course> findAllById(List<Long> longs) throws PersistentException {
+
+        List<Course> courses = super.findAllById(longs);
+        for (Course course: courses) {
+            try {
+                getStudentIdsForCourse(course);
+            } catch (DAOException e) {
+                throw new PersistentException(e.getMessage(),e);
+            }
+        }
+
+         return courses;
+    }
+
+    @Override
     public Optional<Course> findById(Long id) throws PersistentException {
 
         Optional<Course> optionalCourse = super.findById(id);
         try {
             if(optionalCourse.isPresent()){
-                List<Registration> registrationList = registrationDAO.findCourseById(optionalCourse.get().getId());
-                List<Long> ids = registrationList.stream().map(Registration::getStudentId).collect(Collectors.toList());
-                optionalCourse.get().setStudentIds(ids);
+                getStudentIdsForCourse(optionalCourse.get());
             }
         }catch (DAOException e){
             throw new PersistentException(e.getMessage(),e);
@@ -151,24 +179,52 @@ public class CourseRepositoryImpl extends CourseRepository{
             if(!courseDAO.readById(entity.getId()).isPresent()) {
                 super.add(entity);
                 System.out.println("Course Added ...");
+            }else {
+                System.out.println("Course Already Added will be update...");
+                update(entity);
+                System.out.println("Course has been update...");
+                return entity;
             }
         } catch (DAOException e) {
             throw new PersistentException(e.getMessage(),e);
         }
 
-        System.out.println("Finished from course ... ");
-
         for (Long id: entity.getStudentIds()) {
-            if(!isRegistered(entity.getId(),id)){
-                try {
-                    registrationDAO.insert(new Registration(id,entity.getId()));
-                } catch (DAOException e) {
-                    throw new PersistentException(e.getMessage(),e);
-                }
-            }
+            register(entity.getId(),id);
         }
 
         return entity;
+    }
+
+    @Override
+    public Course update(Course entity) throws PersistentException {
+
+        super.update(entity);
+        try {
+
+
+            List<Registration> regList = registrationDAO.findCourseById(entity.getId());
+            for (Registration reg:regList) {
+                // this will edit in future we need to call function 1 time for delete any student related for course
+                registrationDAO.delete(reg.getId());
+            }
+            for (Long id: entity.getStudentIds()) {
+                register(entity.getId(),id);
+            }
+
+        } catch (DAOException e) {
+            throw new PersistentException(e.getMessage(),e);
+        }
+
+        return entity;
+    }
+
+    private void getStudentIdsForCourse(Course course) throws DAOException{
+
+        List<Registration> registrationList = registrationDAO.findCourseById(course.getId());
+        List<Long> ids = registrationList.stream().map(Registration::getStudentId).collect(Collectors.toList());
+        course.setStudentIds(ids);
+
     }
 
 }

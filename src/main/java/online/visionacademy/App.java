@@ -37,15 +37,25 @@ public class App {
             System.out.println("=======================");
             courseRepository.findAll().forEach(System.out::println);
             System.out.println("=======================");
-            Course course = new Course("CD","CD CD","CD CD ...");
-            course.addStudent(new Student(1L));
-            course.addStudent(new Student(2L));
-            course.addStudent(new Student(3L));
-            course.addStudent(new Student(21L));
-            course.addStudent(new Student(22L));
+            System.out.println("Change ... ");
+//            courseRepository.add(new Course(22L,"CD","CD CD","CD CD CD"));
+            System.out.println("=======================");
+//            Course course = new Course("CD","CD CD","CD CD ...");
+//            course.addStudent(new Student(1L));
+//            course.addStudent(new Student(2L));
+//            course.addStudent(new Student(3L));
+//            course.addStudent(new Student(21L));
+//            course.addStudent(new Student(22L));
+            for (Course course: courseRepository.findAll()) {
+                System.out.println(course);
+                if(course.getStudentIds().size()!=0)
+                    studentRepository.findAllById(course.getStudentIds()).forEach(System.out::println);
+                else
+                    System.out.println("No student in this class....");
+                System.out.println("==============================================");
+            }
 
-
-            courseRepository.add(course);
+//            courseRepository.add(course);
             System.out.println("=======================");
 
 

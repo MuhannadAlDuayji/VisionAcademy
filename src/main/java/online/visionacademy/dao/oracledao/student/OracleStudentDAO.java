@@ -1,10 +1,7 @@
 package online.visionacademy.dao.oracledao.student;
 
-import online.visionacademy.datasource.ConnectionFactory;
-import online.visionacademy.datasource.DataSourceType;
 import online.visionacademy.exceptions.DAOException;
 import online.visionacademy.model.Student;
-import online.visionacademy.support.QueryBuilder;
 
 import java.sql.Date;
 import java.sql.PreparedStatement;

@@ -3,7 +3,7 @@ package online.visionacademy.repositories;
 import online.visionacademy.dao.AbstractDAO;
 import online.visionacademy.dao.Identifiable;
 import online.visionacademy.exceptions.DAOException;
-import online.visionacademy.exceptions.PersistentException;
+import online.visionacademy.exceptions.PersistenceException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,43 +20,43 @@ public abstract class AbstractRepository<T extends Identifiable,ID> implements G
     public abstract AbstractDAO getAbstractDAO();
 
     @Override
-    public Integer count() throws PersistentException{
+    public Integer count() throws PersistenceException {
 
         try {
             return dao.count();
         }catch (DAOException e){
-            throw new PersistentException(e.getMessage(),e);
+            throw new PersistenceException(e.getMessage(),e);
         }
     }
 
     @Override
-    public boolean contains(ID id) throws PersistentException {
+    public boolean contains(ID id) throws PersistenceException {
 
         try {
 
             return dao.readById(id).isPresent();
 
         } catch (DAOException e) {
-            throw new PersistentException(e.getMessage(),e);
+            throw new PersistenceException(e.getMessage(),e);
         }
 
     }
 
     @Override
-    public T add(T entity) throws PersistentException {
+    public T add(T entity) throws PersistenceException {
 
         T temp;
 
         try {
             temp = dao.insert(entity);
         } catch (DAOException e) {
-            throw new PersistentException(e.getMessage(),e);
+            throw new PersistenceException(e.getMessage(),e);
         }
         return temp;
     }
 
     @Override
-    public List<T> addAll(List<T> entities) throws PersistentException {
+    public List<T> addAll(List<T> entities) throws PersistenceException {
 
         List<T> temp = new ArrayList<>();
 
@@ -64,7 +64,7 @@ public abstract class AbstractRepository<T extends Identifiable,ID> implements G
             try {
                 temp.add(dao.insert(entity));
             } catch (DAOException e) {
-                throw new PersistentException(e.getMessage(),e);
+                throw new PersistenceException(e.getMessage(),e);
             }
         }
 
@@ -72,50 +72,50 @@ public abstract class AbstractRepository<T extends Identifiable,ID> implements G
     }
 
     @Override
-    public Optional<T> findById(ID id) throws PersistentException {
+    public Optional<T> findById(ID id) throws PersistenceException {
 
         try {
 
            return dao.readById(id);
 
         } catch (DAOException e) {
-            throw new PersistentException(e.getMessage(),e);
+            throw new PersistenceException(e.getMessage(),e);
         }
     }
 
     @Override
-    public List<T> findAll() throws PersistentException {
+    public List<T> findAll() throws PersistenceException {
 
         try {
            return dao.readAll();
         } catch (DAOException e) {
-            throw new PersistentException(e.getMessage(),e);
+            throw new PersistenceException(e.getMessage(),e);
         }
     }
 
     @Override
-    public List<T> findAllById(List<ID> ids) throws PersistentException {
+    public List<T> findAllById(List<ID> ids) throws PersistenceException {
 
         try {
             return dao.readAllById(ids);
         } catch (DAOException e) {
-            throw new PersistentException(e.getMessage(),e);
+            throw new PersistenceException(e.getMessage(),e);
         }
     }
 
     @Override
-    public T update(T entity) throws PersistentException {
+    public T update(T entity) throws PersistenceException {
 
         try {
             return dao.update(entity);
         } catch (DAOException e) {
-            throw new PersistentException(e.getMessage(),e);
+            throw new PersistenceException(e.getMessage(),e);
         }
 
     }
 
     @Override
-    public void removeById(ID id) throws PersistentException {
+    public void removeById(ID id) throws PersistenceException {
 
         try {
 
@@ -125,27 +125,27 @@ public abstract class AbstractRepository<T extends Identifiable,ID> implements G
              dao.delete(id);
 
             }else {
-                throw new PersistentException("Could not find id : "+id);
+                throw new PersistenceException("Could not find id : "+id);
             }
         } catch (DAOException e) {
-            throw new PersistentException(e.getMessage(),e);
+            throw new PersistenceException(e.getMessage(),e);
         }
 
         System.out.println("Item has been Remove ...");
     }
 
     @Override
-    public void remove(T entity) throws PersistentException {
+    public void remove(T entity) throws PersistenceException {
 
         try {
             dao.delete((ID)entity.getId());
         } catch (DAOException e) {
-            throw new PersistentException(e.getMessage(),e);
+            throw new PersistenceException(e.getMessage(),e);
         }
     }
 
     @Override
-    public void removeAllById(List<ID> ids) throws PersistentException {
+    public void removeAllById(List<ID> ids) throws PersistenceException {
 
         try {
             for (ID id:ids) {
@@ -153,8 +153,21 @@ public abstract class AbstractRepository<T extends Identifiable,ID> implements G
                 dao.delete(id);
             }
         } catch (DAOException e) {
-            throw new PersistentException(e.getMessage(),e);
+            throw new PersistenceException(e.getMessage(),e);
         }
     }
 
+    @Override
+    public List<T> findByColumn(String column, String value) throws PersistenceException {
+
+        List<T> entities = new ArrayList<>();
+
+        try {
+            entities = dao.readByColumn(column,value);
+        } catch (DAOException e) {
+            throw new RuntimeException(e);
+        }
+
+        return entities;
+    }
 }

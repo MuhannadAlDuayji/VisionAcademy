@@ -6,11 +6,10 @@ import online.visionacademy.dao.oracledao.course.OracleCourseDAO;
 import online.visionacademy.dao.oracledao.registration.OracleRegistrationDAO;
 import online.visionacademy.dao.oracledao.registration.RegistrationDAO;
 import online.visionacademy.exceptions.DAOException;
-import online.visionacademy.exceptions.PersistentException;
+import online.visionacademy.exceptions.PersistenceException;
 import online.visionacademy.model.Course;
 import online.visionacademy.model.Registration;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -32,27 +31,26 @@ public class CourseRepositoryImpl extends CourseRepository{
     }
 
     @Override
-    public List<Course> findStudentId(Long studentId) throws PersistentException {
+    public List<Course> findStudentId(Long studentId) throws PersistenceException {
 
         List<Course> courseList = new ArrayList<>();
 
         try {
             List<Registration> registrationList = registrationDAO.findStudentById(studentId);
             for (Registration registration: registrationList) {
-                Optional<Course> optionalCourse = courseDAO.readById(registration.getId());
+                Optional<Course> optionalCourse = courseDAO.readById(registration.getCourseId());
                 optionalCourse.ifPresent(courseList::add);
-
             }
         } catch (DAOException e) {
             
-            throw new PersistentException(e.getMessage(),e);
+            throw new PersistenceException(e.getMessage(),e);
         }
 
         return courseList;
     }
 
     @Override
-    public void removeAllRegistration(Long courseId) throws PersistentException {
+    public void removeAllRegistration(Long courseId) throws PersistenceException {
 
         try {
 
@@ -61,24 +59,24 @@ public class CourseRepositoryImpl extends CourseRepository{
             }
 
         } catch (DAOException e) {
-            throw new PersistentException(e.getMessage(),e);
+            throw new PersistenceException(e.getMessage(),e);
         }
     }
 
     @Override
-    public Integer studentCount(Long courseId) throws PersistentException {
+    public Integer studentCount(Long courseId) throws PersistenceException {
 
 
         try {
             return registrationDAO.findCourseById(courseId).size();
         } catch (DAOException e) {
-            throw new PersistentException(e.getMessage(),e);
+            throw new PersistenceException(e.getMessage(),e);
         }
 
     }
 
     @Override
-    public boolean isRegistered(Long courseId, Long studentId) throws PersistentException {
+    public boolean isRegistered(Long courseId, Long studentId) throws PersistenceException {
 
         try {
 
@@ -90,13 +88,13 @@ public class CourseRepositoryImpl extends CourseRepository{
             }
 
         } catch (DAOException e) {
-            throw new PersistentException(e.getMessage(),e);
+            throw new PersistenceException(e.getMessage(),e);
         }
         return false;
     }
 
     @Override
-    public void register(Long courseId, Long studentId) throws PersistentException {
+    public void register(Long courseId, Long studentId) throws PersistenceException {
 
         if(isRegistered(courseId,studentId)) {
             System.out.println("Already exists.");
@@ -105,12 +103,12 @@ public class CourseRepositoryImpl extends CourseRepository{
         try {
             registrationDAO.insert(new Registration(studentId,courseId));
         } catch (DAOException e) {
-            throw new PersistentException(e.getMessage(),e);
+            throw new PersistenceException(e.getMessage(),e);
         }
     }
 
     @Override
-    public void deRegistered(Long courseId, Long studentId) throws PersistentException {
+    public void deRegistered(Long courseId, Long studentId) throws PersistenceException {
 
         try {
 
@@ -123,19 +121,19 @@ public class CourseRepositoryImpl extends CourseRepository{
                 }
             }
         } catch (DAOException e) {
-            throw new PersistentException(e.getMessage(),e);
+            throw new PersistenceException(e.getMessage(),e);
         }
     }
 
     @Override
-    public List<Course> findAll() throws PersistentException {
+    public List<Course> findAll() throws PersistenceException {
 
         List<Course> courses = super.findAll();
         for (Course course: courses) {
             try {
                 getStudentIdsForCourse(course);
             } catch (DAOException e) {
-                throw new PersistentException(e.getMessage(),e);
+                throw new PersistenceException(e.getMessage(),e);
             }
         }
 
@@ -143,14 +141,14 @@ public class CourseRepositoryImpl extends CourseRepository{
     }
 
     @Override
-    public List<Course> findAllById(List<Long> longs) throws PersistentException {
+    public List<Course> findAllById(List<Long> longs) throws PersistenceException {
 
         List<Course> courses = super.findAllById(longs);
         for (Course course: courses) {
             try {
                 getStudentIdsForCourse(course);
             } catch (DAOException e) {
-                throw new PersistentException(e.getMessage(),e);
+                throw new PersistenceException(e.getMessage(),e);
             }
         }
 
@@ -158,7 +156,7 @@ public class CourseRepositoryImpl extends CourseRepository{
     }
 
     @Override
-    public Optional<Course> findById(Long id) throws PersistentException {
+    public Optional<Course> findById(Long id) throws PersistenceException {
 
         Optional<Course> optionalCourse = super.findById(id);
         try {
@@ -166,14 +164,14 @@ public class CourseRepositoryImpl extends CourseRepository{
                 getStudentIdsForCourse(optionalCourse.get());
             }
         }catch (DAOException e){
-            throw new PersistentException(e.getMessage(),e);
+            throw new PersistenceException(e.getMessage(),e);
         }
 
         return optionalCourse;
     }
 
     @Override
-    public Course add(Course entity) throws PersistentException {
+    public Course add(Course entity) throws PersistenceException {
 
         try {
             if(!courseDAO.readById(entity.getId()).isPresent()) {
@@ -186,7 +184,7 @@ public class CourseRepositoryImpl extends CourseRepository{
                 return entity;
             }
         } catch (DAOException e) {
-            throw new PersistentException(e.getMessage(),e);
+            throw new PersistenceException(e.getMessage(),e);
         }
 
         for (Long id: entity.getStudentIds()) {
@@ -197,7 +195,7 @@ public class CourseRepositoryImpl extends CourseRepository{
     }
 
     @Override
-    public Course update(Course entity) throws PersistentException {
+    public Course update(Course entity) throws PersistenceException {
 
         super.update(entity);
         try {
@@ -213,7 +211,7 @@ public class CourseRepositoryImpl extends CourseRepository{
             }
 
         } catch (DAOException e) {
-            throw new PersistentException(e.getMessage(),e);
+            throw new PersistenceException(e.getMessage(),e);
         }
 
         return entity;

@@ -1,14 +1,7 @@
 package online.visionacademy;
 
 import net.datafaker.Faker;
-import online.visionacademy.dao.oracledao.course.CourseDAO;
-import online.visionacademy.dao.oracledao.course.OracleCourseDAO;
-import online.visionacademy.dao.oracledao.registration.OracleRegistrationDAO;
-import online.visionacademy.dao.oracledao.registration.RegistrationDAO;
-import online.visionacademy.dao.oracledao.student.OracleStudentDAO;
-import online.visionacademy.dao.oracledao.student.StudentDAO;
-import online.visionacademy.exceptions.DAOException;
-import online.visionacademy.exceptions.PersistentException;
+import online.visionacademy.exceptions.PersistenceException;
 import online.visionacademy.model.Course;
 import online.visionacademy.model.Student;
 import online.visionacademy.repositories.course.CourseRepository;
@@ -16,13 +9,9 @@ import online.visionacademy.repositories.course.CourseRepositoryImpl;
 import online.visionacademy.repositories.student.StudentRepository;
 import online.visionacademy.repositories.student.StudentRepositoryImpl;
 
-import java.sql.PreparedStatement;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
 
 
 public class App {
@@ -33,6 +22,12 @@ public class App {
         CourseRepository courseRepository = new CourseRepositoryImpl();
 
         try {
+
+            Student s = studentRepository.findByColumn("id","1").get(0);
+            System.out.println("Student "+s.getLastName()+", "+s.getFirstName());
+            System.out.println(" Joined ");
+            courseRepository.findStudentId(s.getId()).forEach(course -> System.out.println(course.getName()));
+            System.out.println("======================================");
             studentRepository.addAll(studentList());
             System.out.println("=======================");
             courseRepository.findAll().forEach(System.out::println);
@@ -59,7 +54,7 @@ public class App {
             System.out.println("=======================");
 
 
-        } catch (PersistentException e) {
+        } catch (PersistenceException e) {
             throw new RuntimeException(e);
         }
 

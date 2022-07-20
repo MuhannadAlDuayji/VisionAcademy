@@ -5,7 +5,7 @@ import online.visionacademy.dao.oracledao.registration.OracleRegistrationDAO;
 import online.visionacademy.dao.oracledao.registration.RegistrationDAO;
 import online.visionacademy.dao.oracledao.student.OracleStudentDAO;
 import online.visionacademy.exceptions.DAOException;
-import online.visionacademy.exceptions.PersistentException;
+import online.visionacademy.exceptions.PersistenceException;
 import online.visionacademy.model.Registration;
 import online.visionacademy.model.Student;
 
@@ -28,7 +28,7 @@ public class StudentRepositoryImpl extends StudentRepository{
 
 
     @Override
-    public void removeById(Long studentId) throws PersistentException{
+    public void removeById(Long studentId) throws PersistenceException {
 
         try {
             boolean isExists = contains(studentId);
@@ -41,13 +41,13 @@ public class StudentRepositoryImpl extends StudentRepository{
             }
 
         } catch (DAOException e) {
-            throw new PersistentException(e.getMessage(),e);
+            throw new PersistenceException(e.getMessage(),e);
         }
         super.removeById(studentId);
     }
 
     @Override
-    public List<Student> findCourseId(Long courseId) throws PersistentException {
+    public List<Student> findCourseId(Long courseId) throws PersistenceException {
 
         List<Student> studentList = new ArrayList<>();
 
@@ -60,21 +60,21 @@ public class StudentRepositoryImpl extends StudentRepository{
             }
 
         }catch (DAOException e){
-                throw new PersistentException(e.getMessage(),e);
+                throw new PersistenceException(e.getMessage(),e);
         }
 
         return studentList;
     }
 
     @Override
-    public Integer courseCount(Long studentId) throws PersistentException {
+    public Integer courseCount(Long studentId) throws PersistenceException {
 
         int count = 0;
 
         try {
             count = regDAO.findStudentById(studentId).size();
         }catch (DAOException e){
-            throw new PersistentException(e.getMessage(),e);
+            throw new PersistenceException(e.getMessage(),e);
         }
 
         return count;

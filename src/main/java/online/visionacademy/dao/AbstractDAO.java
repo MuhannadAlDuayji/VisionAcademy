@@ -6,7 +6,6 @@ import online.visionacademy.exceptions.DAOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -23,6 +22,8 @@ public abstract class AbstractDAO<T,ID> implements GenericDAO<T,ID> {
     protected abstract String getDeleteQuery();
     protected abstract String getCountQuery();
 
+    protected abstract String getSelectByColumnQuery(String targetColumn);
+
     protected abstract void setGeneratedKey(ResultSet rs, T entity) throws DAOException;
 
     // set the id for the where clause in preparedStatement
@@ -30,6 +31,7 @@ public abstract class AbstractDAO<T,ID> implements GenericDAO<T,ID> {
     // set the parameter for the preparedStatement using the passed obj
     protected abstract void setStatementParas(PreparedStatement ps, T entity)throws DAOException;
     protected abstract void setStatementParas(PreparedStatement ps, List<ID> ids)throws DAOException;
+    protected abstract void setStatementWhereColumn(PreparedStatement ps, String value)throws DAOException;
 
     // map/read/convert the ResultSet into an object of type t
     protected abstract T mapObject(ResultSet rs) throws DAOException;
@@ -187,4 +189,27 @@ public abstract class AbstractDAO<T,ID> implements GenericDAO<T,ID> {
 
     }
 
+    @Override
+    public List<T> readByColumn(String column, String value) throws DAOException {
+
+        List<T> list = new ArrayList<>();
+        String selectByColumnQuery =  getSelectByColumnQuery(column);
+
+        try(Connection connection = getConnectionFactory().createConnection();
+            PreparedStatement ps = connection.prepareStatement(selectByColumnQuery)) {
+
+            System.out.println(selectByColumnQuery.replace("?",value));
+            setStatementWhereColumn(ps,value);
+            ResultSet rs = ps.executeQuery();
+
+            if(rs !=  null)
+                list = mapAllObjects(rs);
+
+        }
+        catch (Exception e){
+            throw new DAOException(e.getMessage(),e);
+        }
+
+        return list;
+    }
 }

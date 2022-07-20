@@ -26,6 +26,7 @@ public interface GenericDAO<T,ID> {
     public abstract void delete(ID id) throws DAOException;
 
 
+    public List<T> readByColumn(String column, String value) throws DAOException;
     public default String ddf(){
         System.out.println("" +
                 "");

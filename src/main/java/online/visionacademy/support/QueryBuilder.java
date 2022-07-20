@@ -101,6 +101,19 @@ public class QueryBuilder {
         return sql.toString();
     }
 
+    public static String targetColumn(final String TABLE_NAME, final String [] COLUMN, final String targetColumn){
+
+        StringBuilder sql = new StringBuilder();
+        sql.append(selectAll(TABLE_NAME,COLUMN));
+        sql.append(" WHERE ");
+        sql.append(targetColumn);
+        sql.append(" = ? ");
+
+        System.out.println(sql);
+
+        return sql.toString();
+    }
+
 
     private static <T> String questionMarkAndColon(List<T> ids){
 

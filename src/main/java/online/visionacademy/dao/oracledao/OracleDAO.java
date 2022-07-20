@@ -118,4 +118,19 @@ public abstract class OracleDAO<T extends Identifiable,ID> extends AbstractDAO<T
             throw new DAOException(e.getMessage(),e);
         }
     }
+
+    @Override
+    protected String getSelectByColumnQuery(String targetColumn) {
+        return QueryBuilder.targetColumn(getTableName(),getColumns(),targetColumn);
+    }
+
+    @Override
+    protected void setStatementWhereColumn(PreparedStatement ps, String value) throws DAOException {
+
+        try {
+            ps.setString(1,value);
+        } catch (SQLException e) {
+            throw new DAOException(e.getMessage(),e);
+        }
+    }
 }

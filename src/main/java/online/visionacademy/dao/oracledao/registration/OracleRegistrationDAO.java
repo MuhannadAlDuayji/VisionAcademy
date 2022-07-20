@@ -159,6 +159,7 @@ public class OracleRegistrationDAO extends RegistrationDAO{
 
         List<Registration> registrationList = new ArrayList<>();
 
+
         try (Connection con = getConnectionFactory().createConnection();
             PreparedStatement ps = con.prepareStatement(query)){
             ps.setLong(1,id);

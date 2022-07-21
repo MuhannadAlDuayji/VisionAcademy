@@ -305,8 +305,6 @@ public class StudentServiceImpl implements StudentService{
         validator.setValues("Last name",lastName,2,10);
         validator.validate();
 
-
-
     }
 
 }

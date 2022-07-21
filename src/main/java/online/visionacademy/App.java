@@ -9,6 +9,8 @@ import online.visionacademy.repositories.course.CourseRepository;
 import online.visionacademy.repositories.course.CourseRepositoryImpl;
 import online.visionacademy.repositories.student.StudentRepository;
 import online.visionacademy.repositories.student.StudentRepositoryImpl;
+import online.visionacademy.service.CourseService;
+import online.visionacademy.service.CourseServiceImpl;
 import online.visionacademy.service.StudentService;
 import online.visionacademy.service.StudentServiceImpl;
 
@@ -23,11 +25,11 @@ public class App {
     public static void main(String[] args)  {
 
         StudentService studentService = new StudentServiceImpl();
+        CourseService courseService = new CourseServiceImpl();
 
         try {
 
-            studentService.getByFirstName("Gail").forEach(System.out::println);
-
+            System.out.println(courseService.studentCount(22L));
 
         } catch (ServiceException e) {
             throw new RuntimeException(e);

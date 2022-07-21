@@ -8,7 +8,7 @@ import java.util.List;
 
 public abstract class CourseRepository extends AbstractRepository<Course,Long> {
 
-    public abstract List<Course> findStudentId(Long studentId) throws PersistenceException;
+    public abstract List<Course> findByStudentId(Long studentId) throws PersistenceException;
     public abstract void removeAllRegistration(Long courseId) throws PersistenceException;
 
 

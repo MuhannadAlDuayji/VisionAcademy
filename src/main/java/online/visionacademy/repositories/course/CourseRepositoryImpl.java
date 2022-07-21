@@ -31,7 +31,7 @@ public class CourseRepositoryImpl extends CourseRepository{
     }
 
     @Override
-    public List<Course> findStudentId(Long studentId) throws PersistenceException {
+    public List<Course> findByStudentId(Long studentId) throws PersistenceException {
 
         List<Course> courseList = new ArrayList<>();
 

@@ -1,5 +1,6 @@
 package online.visionacademy.service;
 
+import online.visionacademy.dtos.StudentDTO;
 import online.visionacademy.exceptions.CourseNotFoundException;
 import online.visionacademy.exceptions.ServiceException;
 import online.visionacademy.exceptions.StudentNotFoundException;
@@ -42,6 +43,7 @@ public interface StudentService {
     public abstract void cancelCourse(Long courseId, Long studentId) throws ServiceException, StudentNotFoundException, CourseNotFoundException;
     public abstract void cancelAll(Long studentId) throws ServiceException, StudentNotFoundException, CourseNotFoundException;
 
+    public abstract StudentDTO getStudentWithCourses(Long id) throws ServiceException;
 
 }
 

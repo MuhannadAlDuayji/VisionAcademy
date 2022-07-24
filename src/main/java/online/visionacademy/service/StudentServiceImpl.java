@@ -1,6 +1,8 @@
 package online.visionacademy.service;
 
+import online.visionacademy.dtos.StudentDTO;
 import online.visionacademy.exceptions.*;
+import online.visionacademy.mappers.StudentMapper;
 import online.visionacademy.model.Course;
 import online.visionacademy.model.Student;
 import online.visionacademy.repositories.course.CourseRepository;
@@ -14,6 +16,7 @@ import online.visionacademy.validators.Validators;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class StudentServiceImpl implements StudentService{
 
@@ -277,6 +280,28 @@ public class StudentServiceImpl implements StudentService{
 
         } catch (PersistenceException e) {
             throw new ServiceException("Could not cancel");
+        }
+
+    }
+
+    public StudentDTO getStudentWithCourses(Long id) throws ServiceException {
+
+        Student student = getById(id);
+
+        StudentMapper studentMapper= new StudentMapper();
+        StudentDTO studentDTO = studentMapper.mapToDTO(student);
+
+
+        try {
+            studentDTO.setCourseList(
+                    courseRepository.findByStudentId(id)
+                            .stream()
+                            .map(course -> course.getName()+" "+course.getCode()).
+                            collect(Collectors.toList()
+                            ));
+            return studentDTO;
+        } catch (PersistenceException e) {
+            throw new ServiceException(e.getMessage());
         }
 
     }

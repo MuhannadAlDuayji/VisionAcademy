@@ -16,7 +16,6 @@ public class Student implements Identifiable {
 
     }
 
-
     public Student(Long id){
         this.id = id;
     }

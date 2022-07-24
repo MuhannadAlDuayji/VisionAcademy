@@ -1,20 +1,13 @@
 package online.visionacademy;
 
 import net.datafaker.Faker;
-import online.visionacademy.exceptions.PersistenceException;
 import online.visionacademy.exceptions.ServiceException;
-import online.visionacademy.model.Course;
 import online.visionacademy.model.Student;
-import online.visionacademy.repositories.course.CourseRepository;
-import online.visionacademy.repositories.course.CourseRepositoryImpl;
-import online.visionacademy.repositories.student.StudentRepository;
-import online.visionacademy.repositories.student.StudentRepositoryImpl;
 import online.visionacademy.service.CourseService;
 import online.visionacademy.service.CourseServiceImpl;
 import online.visionacademy.service.StudentService;
 import online.visionacademy.service.StudentServiceImpl;
 
-import javax.xml.ws.Service;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +22,8 @@ public class App {
 
         try {
 
-            System.out.println(courseService.studentCount(22L));
+            System.out.println(studentService.getStudentWithCourses(3L));
+            System.out.println(courseService.getCourseWithStudents(3L));
 
         } catch (ServiceException e) {
             throw new RuntimeException(e);

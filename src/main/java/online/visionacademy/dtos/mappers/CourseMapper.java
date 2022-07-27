@@ -1,4 +1,4 @@
-package online.visionacademy.mappers;
+package online.visionacademy.dtos.mappers;
 
 import online.visionacademy.dtos.CourseDTO;
 import online.visionacademy.model.Course;

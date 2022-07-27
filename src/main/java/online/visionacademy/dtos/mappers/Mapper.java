@@ -1,4 +1,4 @@
-package online.visionacademy.mappers;
+package online.visionacademy.dtos.mappers;
 
 public interface Mapper <T,E>{
 

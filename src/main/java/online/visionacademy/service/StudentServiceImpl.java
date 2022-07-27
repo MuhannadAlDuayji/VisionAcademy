@@ -2,7 +2,7 @@ package online.visionacademy.service;
 
 import online.visionacademy.dtos.StudentDTO;
 import online.visionacademy.exceptions.*;
-import online.visionacademy.mappers.StudentMapper;
+import online.visionacademy.dtos.mappers.StudentMapper;
 import online.visionacademy.model.Course;
 import online.visionacademy.model.Student;
 import online.visionacademy.repositories.course.CourseRepository;

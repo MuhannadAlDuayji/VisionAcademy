@@ -5,7 +5,7 @@ import online.visionacademy.exceptions.CourseNotFoundException;
 import online.visionacademy.exceptions.PersistenceException;
 import online.visionacademy.exceptions.ServiceException;
 import online.visionacademy.exceptions.ValidationException;
-import online.visionacademy.mappers.CourseMapper;
+import online.visionacademy.dtos.mappers.CourseMapper;
 import online.visionacademy.model.Course;
 import online.visionacademy.repositories.course.CourseRepository;
 import online.visionacademy.repositories.course.CourseRepositoryImpl;

@@ -3,7 +3,9 @@ package online.visionacademy.ui.views;
 import online.visionacademy.ui.common.PanelFactory;
 import online.visionacademy.ui.components.CircleImage;
 import online.visionacademy.ui.components.Text;
+import online.visionacademy.ui.components.TextWithIcon;
 import online.visionacademy.ui.util.AppColor;
+import org.kordamp.ikonli.materialdesign.MaterialDesign;
 
 
 import javax.swing.*;
@@ -28,14 +30,14 @@ public class HeaderView extends JPanel {
         //padding and border
         setBorder(new EmptyBorder(20,20,20,20));
         Border padding = getBorder();
-        Border bottomBorder = BorderFactory.createMatteBorder(0,0,1,0, Color.RED);
+        Border bottomBorder = BorderFactory.createMatteBorder(0,0,1,0, Color.decode("#DDDDDD"));
         setBorder(new CompoundBorder(bottomBorder,padding));
-
+        // leading most left
         JPanel basicInfoPanel = PanelFactory.createPanel(Color.decode(AppColor.SEC_BACKGROUND),5,FlowLayout.LEADING,10,10);
 
         CircleImage userAvatar = createCircleImage(
-          "C:\\Workspaces\\vision_projects\\student_management_system\\StudentManagement\\src\\main\\java\\online\\visionacademy\\ui\\images\\weasel.png",70
-          ,3,Color.WHITE
+          "C:\\Workspaces\\vision_projects\\student_management_system\\StudentManagement\\src\\main\\java\\online\\visionacademy\\ui\\images\\weasel.png"
+                ,100,2,Color.WHITE
         );
         basicInfoPanel.add(userAvatar);
 
@@ -43,6 +45,7 @@ public class HeaderView extends JPanel {
         basicInfoPanel.add(welcomeUserPanel);
 
         add(basicInfoPanel);
+        add(createQuickActionsPanel());
 
         setVisible(true);
     }
@@ -68,10 +71,17 @@ public class HeaderView extends JPanel {
     public JPanel createWelcomeUserPanel(){
 
         JPanel welcomeUserPanel = PanelFactory.createBoxPanel(BoxLayout.Y_AXIS,Color.decode(AppColor.SEC_BACKGROUND));
-
-        welcomeUserPanel.add(new Text("",Color.decode(AppColor.WHITE)));
-
+        welcomeUserPanel.add(new Text("Muhannad",Color.decode(AppColor.WHITE)));
+        welcomeUserPanel.add(new TextWithIcon("Last Login 29/08/2022 at 09:45 "
+                ,Color.decode(AppColor.WHITE),12,Font.PLAIN, MaterialDesign.MDI_CLOCK));
         return welcomeUserPanel;
+    }
+
+    public JPanel createQuickActionsPanel(){
+        JPanel quickPanel = PanelFactory.createBoxPanel(BoxLayout.Y_AXIS,Color.decode(AppColor.SEC_BACKGROUND));
+        quickPanel.add(new Text("Quick Actions",Color.WHITE,20,Font.PLAIN));
+        quickPanel.add(new Text("Add | Edit | Remove | Logout",Color.WHITE,14,Font.PLAIN));
+        return quickPanel;
     }
 
 }

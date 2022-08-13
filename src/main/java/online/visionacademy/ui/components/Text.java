@@ -6,16 +6,16 @@ import java.awt.*;
 public class Text extends JLabel {
 
     private String text;
-    private Color color;
-    private int size;
+    protected Color color;
+    protected int size;
     private int style;
 
     public Text(String text) {
-        this(text,Color.BLACK,24,Font.BOLD);
+        this(text,Color.BLACK,18,Font.BOLD);
     }
 
     public Text(String text, Color color) {
-        this(text,color,24,Font.BOLD);
+        this(text,color,18,Font.BOLD);
 
     }
 

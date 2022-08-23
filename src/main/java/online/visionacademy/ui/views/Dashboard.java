@@ -26,15 +26,15 @@ public class Dashboard extends JPanel {
         setPreferredSize(new Dimension(width-50,height));
 
         NavigatablePanel studentCard = new NavigatablePanel("Student","Add , remove and edit students", Color.white, MaterialDesign.MDI_ACCOUNT_MULTIPLE, NavigationItem.STUDENT_DASHBOARD);
-        NavigatablePanel courseCard =  new NavigatablePanel("Courses","Add , remove and edit courses", Color.white, MaterialDesign.MDI_LAPTOP_CHROMEBOOK,NavigationItem.COMING_SOON_DASHBOARD);
+        NavigatablePanel courseCard =  new NavigatablePanel("Courses","Add , remove and edit courses", Color.white, MaterialDesign.MDI_LAPTOP_CHROMEBOOK,NavigationItem.COURSE_DASHBOARD);
         NavigatablePanel registerCard = new NavigatablePanel("Registration","Add , remove and edit registration", Color.white, MaterialDesign.MDI_FILE_DOCUMENT,NavigationItem.COMING_SOON_DASHBOARD);
         NavigatablePanel reportCard = new NavigatablePanel("Reports","Export and print report", Color.white, MaterialDesign.MDI_FILE_PDF,NavigationItem.COMING_SOON_DASHBOARD);
         NavigatablePanel settingsCard = new NavigatablePanel("Settings","Customize and control settings", Color.white, MaterialDesign.MDI_SETTINGS,NavigationItem.COMING_SOON_DASHBOARD);
         add(studentCard);
         add(courseCard);
-        add(registerCard);
-        add(reportCard);
-        add(settingsCard);
+        //add(registerCard);
+        //add(reportCard);
+        //add(settingsCard);
 
 
         setVisible(true);

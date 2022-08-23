@@ -71,7 +71,7 @@ public class NavigatablePanel extends JPanel {
         this.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                Router.getInstance().navigation(destination);
+                Router.getInstance().navigate(destination);
             }
         });
     }

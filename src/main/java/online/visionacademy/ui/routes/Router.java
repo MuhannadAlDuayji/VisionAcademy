@@ -1,65 +1,81 @@
 package online.visionacademy.ui.routes;
 
-import online.visionacademy.ui.views.ComingSoonView;
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
+import javax.swing.JPanel;
+import online.visionacademy.ui.views.CourseDashboardView;
 import online.visionacademy.ui.views.Dashboard;
 import online.visionacademy.ui.views.StudentDashboardView;
 
-import javax.swing.*;
-import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeSupport;
-
 public class Router {
 
-    private final PropertyChangeSupport pcs = new PropertyChangeSupport(this);
+    private PropertyChangeSupport pcs = new PropertyChangeSupport(this);
     private static Router instance;
 
-    private Router(){}
+    private Router() {
 
-    public JPanel getActiveView(){
+    }
+
+    public JPanel getActiveView() {
         return Navigator.getInstance().top();
     }
 
-    public void back(){
+    public void back() {
         Navigator.getInstance().pop();
+        pcs.firePropertyChange("stack", 0, 1);
     }
 
-    public boolean isBackBtnActive(){
+    public boolean isBackBtnActive() {
         return Navigator.getInstance().size() > 1;
     }
 
-    public void navigation(NavigationItem des){
+    public void navigate(NavigationItem des) {
 
-        switch (des){
+        JPanel old = getActiveView();
 
+        JPanel destinationView;
+        switch (des) {
             case DASHBOARD:
-                Navigator.getInstance().push(new Dashboard());
+                destinationView = new Dashboard();
                 break;
+
             case STUDENT_DASHBOARD:
-                Navigator.getInstance().push(new StudentDashboardView());
+                destinationView = new StudentDashboardView();
                 break;
-            case COMING_SOON_DASHBOARD:
-                Navigator.getInstance().push(new ComingSoonView());
+
+
+
+            case COURSE_DASHBOARD:
+                destinationView = new CourseDashboardView();
                 break;
+
+
             default:
-                Navigator.getInstance().push(new ComingSoonView());
+                destinationView = new CourseDashboardView();
         }
+
+        Navigator.getInstance().push(destinationView);
+
+        JPanel newView = getActiveView();
+        pcs.firePropertyChange("stack", old, newView);
     }
 
-    public String[] getPath(){
+    public String[] getNavigationPath() {
         return Navigator.getInstance().getNavigationPath();
     }
 
     public static Router getInstance() {
-
-        if(instance == null)
+        if (instance == null) {
             instance = new Router();
+        }
         return instance;
     }
 
-    public void addPropertyChangeListener(PropertyChangeListener listener){
+    public void addPropertyChangeListener(PropertyChangeListener listener) {
         pcs.addPropertyChangeListener(listener);
     }
-    public void removePropertyChangeListener(PropertyChangeListener listener){
+
+    public void removePropertyChangeListener(PropertyChangeListener listener) {
         pcs.removePropertyChangeListener(listener);
     }
 }

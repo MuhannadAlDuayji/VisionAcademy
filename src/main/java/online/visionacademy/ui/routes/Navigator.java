@@ -1,7 +1,7 @@
 package online.visionacademy.ui.routes;
 
-import javax.swing.*;
 import java.util.Stack;
+import javax.swing.JPanel;
 
 public class Navigator {
 
@@ -9,50 +9,49 @@ public class Navigator {
 
     private static Navigator instance;
 
-    private Navigator(){
-
+    private Navigator() {
     }
 
-    public boolean isEmpty(){
+    public boolean isEmpty() {
         return stack.isEmpty();
     }
 
-    public void push(JPanel view){
+    public void push(JPanel view) {
         stack.push(view);
     }
 
-    public JPanel top(){
-        if (stack.isEmpty())
+    public JPanel top() {
+
+        if (isEmpty()) {
             return null;
+        }
         return stack.peek();
     }
 
-    public JPanel pop(){
-        if (stack.isEmpty())
-            return null;
-        return stack.pop();
+    public JPanel pop() {
+        JPanel panel = stack.pop();
+        return panel;
     }
 
-    public int size(){
+    public int size() {
         return stack.size();
     }
 
-    public String[] getNavigationPath(){
+    public String[] getNavigationPath() {
 
-        String [] elements = new String[size()];
-
-        for (int i = 0; i < stack.size(); i++) {
-            JPanel panel =  stack.get(i);
+        String[] elements = new String[size()];
+        for (int i = 0; i < elements.length; i++) {
+            JPanel panel = stack.get(i);
             elements[i] = panel.getName();
         }
-
         return elements;
     }
 
-    public static Navigator getInstance(){
+    public static Navigator getInstance() {
 
-        if (instance == null)
+        if (instance == null) {
             instance = new Navigator();
+        }
         return instance;
     }
 

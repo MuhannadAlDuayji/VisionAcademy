@@ -17,26 +17,29 @@ public class MainViewPresenter implements MainViewListener , PropertyChangeListe
     public MainViewPresenter(MainView view){
         this.view = view;
         Router.getInstance().addPropertyChangeListener(this);
-        Router.getInstance().navigation(NavigationItem.DASHBOARD);
+        Router.getInstance().   navigate(NavigationItem.DASHBOARD);
 
         view.addListener(this);
     }
 
     @Override
     public void back() {
-        System.out.println("....");
+        Router.getInstance().back();
     }
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
 
         JPanel activeView = Router.getInstance().getActiveView();
-        ContentView contentView = (ContentView) view.getContentView();
+
+        ContentView contentView =  view.getContentView();
         NavigationBody navigationBody = contentView.getNavigationBody();
         navigationBody.removeAll();
-        navigationBody.add(activeView);
 
-        String [] path = Router.getInstance().getPath();
+        navigationBody.add(activeView);
+        navigationBody.repaint();
+
+        String [] path = Router.getInstance().getNavigationPath();
 
         view.setTitleLbl(path[path.length-1]);
         view.setNavigationPath(path);

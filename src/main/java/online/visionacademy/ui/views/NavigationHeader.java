@@ -21,7 +21,7 @@ import java.beans.PropertyChangeListener;
 
 public class NavigationHeader extends JPanel implements PropertyChangeListener {
 
-    private String text = "Dashboard";
+    private String text = "";
     private TextWithIcon navigationTitle;
     private JLabel navigationPath;
 

@@ -11,6 +11,9 @@ import java.util.ArrayList;
 public class MainView extends JFrame {
 
     private final ArrayList<MainViewListener> listeners = new ArrayList<>();
+    private HeaderView headerView = new HeaderView();
+    private ContentView contentView = new ContentView();
+    private FooterView footerView = new FooterView();
     public MainView(){
         init();
     }
@@ -22,11 +25,10 @@ public class MainView extends JFrame {
         setSize(UI.getScreenSize());
         setLayout(new BorderLayout( ));
 
-        addPropertyChangeListener(new MainViewPresenter(this));
 
-        add(new HeaderView(), BorderLayout.NORTH);
-        add(new ContentView(), BorderLayout.CENTER);
-        add(new FooterView(), BorderLayout.SOUTH);
+        add(headerView, BorderLayout.NORTH);
+        add(contentView, BorderLayout.CENTER);
+        add(footerView, BorderLayout.SOUTH);
         this.setSize(new Dimension(1420,720));
         this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
@@ -37,12 +39,12 @@ public class MainView extends JFrame {
         this.listeners.add(listener);
     }
 
-    public JPanel getContentView(){
-       return (JPanel) this.getContentPane().getComponent(1);
+    public ContentView getContentView(){
+       return (ContentView) this.getContentPane().getComponent(1);
     }
 
     public void setTitleLbl(String titleLbl){
-        ContentView contentView =  (ContentView) getContentView();
+        ContentView contentView = getContentView();
         NavigationHeader navigationHeader = contentView.getNavigationHeader();
         navigationHeader.setTitleLbl(titleLbl);
 
@@ -50,7 +52,7 @@ public class MainView extends JFrame {
     }
 
     public void setNavigationPath(String[] path){
-        ContentView contentView =  (ContentView) getContentView();
+        ContentView contentView =  getContentView();
         NavigationHeader navigationHeader = contentView.getNavigationHeader();
         navigationHeader.setNavigationPath(path);
 

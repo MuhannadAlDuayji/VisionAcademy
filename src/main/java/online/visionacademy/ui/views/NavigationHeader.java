@@ -107,7 +107,8 @@ public class NavigationHeader extends JPanel implements PropertyChangeListener {
             if(i==path.length-1){
                 str+=path[i];
             }else {
-                str+=" >> ";
+                str+=path[i];
+                str+="  >>  ";
             }
         }
         navigationPath.setText(str);

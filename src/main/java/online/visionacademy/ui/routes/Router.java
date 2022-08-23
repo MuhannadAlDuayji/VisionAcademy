@@ -3,6 +3,8 @@ package online.visionacademy.ui.routes;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import javax.swing.JPanel;
+
+import online.visionacademy.ui.views.ComingSoonView;
 import online.visionacademy.ui.views.CourseDashboardView;
 import online.visionacademy.ui.views.Dashboard;
 import online.visionacademy.ui.views.StudentDashboardView;
@@ -51,7 +53,7 @@ public class Router {
 
 
             default:
-                destinationView = new CourseDashboardView();
+                destinationView = new ComingSoonView();
         }
 
         Navigator.getInstance().push(destinationView);

@@ -32,9 +32,9 @@ public class Dashboard extends JPanel {
         NavigatablePanel settingsCard = new NavigatablePanel("Settings","Customize and control settings", Color.white, MaterialDesign.MDI_SETTINGS,NavigationItem.COMING_SOON_DASHBOARD);
         add(studentCard);
         add(courseCard);
-        //add(registerCard);
-        //add(reportCard);
-        //add(settingsCard);
+        add(registerCard);
+        add(reportCard);
+        add(settingsCard);
 
 
         setVisible(true);
